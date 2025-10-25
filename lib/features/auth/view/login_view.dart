@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:iyzclinic/core/utils/components/custom_elevated_button.dart';
 import 'package:iyzclinic/core/utils/components/custom_text_from_field.dart';
+import 'package:iyzclinic/core/utils/constants/home_style.dart';
+import 'package:iyzclinic/features/auth/widgets/manager/basic_usage_manager.dart';
 
 import '../../../core/utils/validators/validate_class.dart';
 
@@ -12,11 +14,11 @@ class LoginView extends StatefulWidget {
 }
 
 class _LoginViewState extends State<LoginView> {
-  GlobalKey<FormState> _globalKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _globalKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(backgroundColor: context.homeStyle.appbarColor),
       body: Form(
         key: _globalKey,
         child: Column(
@@ -25,12 +27,18 @@ class _LoginViewState extends State<LoginView> {
               autovalidateMode: AutovalidateMode.onUserInteraction,
               validator: (v) => ValidateClass().validateEmail(v),
             ),
-            CustomElevatedButton(onPressed: () {
-              _globalKey.currentState!.validate();
-            }, text: 'Tıkla'),
+            CustomElevatedButton(
+              onPressed: () => context.basicNavigate.pageNavigateProperty(),
+              text: 'Tıkla',
+            ),
           ],
         ),
       ),
     );
   }
+}
+
+extension _HomeStyleExtension on BuildContext {
+  HomeStyle get homeStyle => HomeStyle(context: this);
+  BasicUsageManager get basicNavigate => BasicUsageManager(context: this);
 }
