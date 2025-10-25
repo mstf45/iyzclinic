@@ -1,6 +1,6 @@
 import '../constants/app_strings.dart';
 
-class ValidateClass {
+  class ValidateClass {
   String? validateName(String? v) {
     if (v == null || v.trim().isEmpty) return AppStrings.nameRequired;
     if (v.trim().length < 2) return AppStrings.minNameTwoRequired;

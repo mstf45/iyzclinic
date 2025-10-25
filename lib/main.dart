@@ -1,6 +1,8 @@
 import 'package:device_preview/device_preview.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:iyzclinic/core/utils/constants/app_strings.dart';
+import 'package:iyzclinic/features/auth/view/login_view.dart';
 
 void main() {
   runApp(
@@ -18,11 +20,11 @@ class MyApp extends StatelessWidget {
       locale: DevicePreview.locale(context),
       builder: DevicePreview.appBuilder,
       debugShowCheckedModeBanner: false,
-      title: 'Yedek Parçam',
+      title: AppStrings.appName,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: const Placeholder(),
+      home: LoginView()
     );
   }
 }
