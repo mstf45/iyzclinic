@@ -39,6 +39,6 @@ class _LoginViewState extends State<LoginView> {
 }
 
 extension _HomeStyleExtension on BuildContext {
-  HomeStyle get homeStyle => HomeStyle(context: this);
+  LoginStyle get homeStyle => LoginStyle(context: this);
   BasicUsageManager get basicNavigate => BasicUsageManager(context: this);
 }
