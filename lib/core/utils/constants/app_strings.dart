@@ -1,5 +1,6 @@
- class AppStrings {
+class AppStrings {
   AppStrings._();
+
   /// [TODO] abstract olarak da Kullanabiliriz
 
   /// [Genel]
@@ -8,9 +9,6 @@
   static const cancel = 'İptal';
   static const error = 'Bir hata oluştu';
 
-
-
-
   /// Auth [Login]
   static const loginEmailLabel = 'E-posta Adresi';
   static const loginPasswordLabel = 'Parola';
@@ -18,10 +16,6 @@
   static const haveAccount = 'Hesabın yok mu?';
   static const loginButton = 'Giriş Yap';
   static const loginTitle = 'Giriş Yap';
-
-
-
-
 
   /// Auth [Register]
   static const registerTitle = 'Kayıt Ol';
@@ -32,6 +26,13 @@
   static const registerButton = ' Kayıt Ol';
   static const loginRichSubText = ' Giriş Yap';
 
+  /// [Auth Forget Password]
+  static const forgetPasswordTitle = 'Şifremi Unuttum';
+  static const forgetPasswordInstruction =
+      'Lütfen kayıtlı e-posta adresinizi giriniz.';
+  static const forgetPasswordButton = 'Şifre Sıfırlama Bağlantısı Gönder';
+  static const forgetPasswordSentInstruction =
+      'Şifre sıfırlama bağlantısı e-posta adresinize gönderildi.';
 
   /// [Validation]
   static const nameRequired = 'İsim gerekli';
@@ -43,5 +44,4 @@
   static const phoneNumberRequired = 'Telefon numarası gerekli';
   static const validPhoneNumber = 'Geçerli bir telefon girin';
   static const invalidPhoneNumber = 'Geçersiz telefon numarası';
-
 }

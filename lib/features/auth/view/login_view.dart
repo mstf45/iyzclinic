@@ -5,6 +5,7 @@ import 'package:iyzclinic/core/utils/components/custom_text_from_field.dart';
 import 'package:iyzclinic/core/utils/constants/app_strings.dart';
 import 'package:iyzclinic/core/utils/constants/custom_sized_box.dart';
 import 'package:iyzclinic/core/utils/constants/home_style.dart';
+import 'package:iyzclinic/features/auth/view/forget_password_view.dart';
 import 'package:iyzclinic/features/auth/view/register_view.dart';
 import 'package:iyzclinic/features/auth/widgets/manager/basic_usage_manager.dart';
 import 'package:iyzclinic/features/home/view/home_view.dart';
@@ -27,6 +28,7 @@ class _LoginViewState extends State<LoginView> with LoginMixin {
     final screenWidth = MediaQuery.sizeOf(context).width;
     final screenHeight = MediaQuery.sizeOf(context).height;
     return Material(
+      color: Colors.white,
       child: SafeArea(
         child: Form(
           key: globalKey,
@@ -48,6 +50,22 @@ class _LoginViewState extends State<LoginView> with LoginMixin {
                   autovalidateMode: AutovalidateMode.onUserInteraction,
                   validator: (v) => ValidateClass().validatePassword(v),
                 ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    TextButton(
+                      onPressed: () {
+                        context.basicNavigate
+                            .setTargetPage(ForgetPasswordView())
+                            .pushPageNavigateProperty();
+                      },
+                      child: Text(
+                        AppStrings.forgetPasswordTitle,
+                        style: TextStyle(color: Colors.black),
+                      ),
+                    ),
+                  ],
+                ),
                 Spacer(),
                 CustomElevatedButton(
                   onPressed: () {
@@ -59,6 +77,7 @@ class _LoginViewState extends State<LoginView> with LoginMixin {
                   },
                   text: AppStrings.loginButton,
                 ),
+
                 RichText(
                   text: TextSpan(
                     text: AppStrings.haveAccount,
@@ -66,7 +85,10 @@ class _LoginViewState extends State<LoginView> with LoginMixin {
                     children: [
                       TextSpan(
                         text: AppStrings.registerButton,
-                        style: TextStyle(color: Colors.blue),
+                        style: TextStyle(
+                          color: Colors.blue,
+                          fontWeight: FontWeight.bold,
+                        ),
                         recognizer: TapGestureRecognizer()
                           ..onTap = () {
                             context.basicNavigate

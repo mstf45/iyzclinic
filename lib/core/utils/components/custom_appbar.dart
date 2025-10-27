@@ -11,7 +11,13 @@ final class CustomAppbar extends StatelessWidget
       shadowColor: Colors.white,
       backgroundColor: Colors.white,
       elevation: 0,
-      title: Text('Ana Sayfa'),
+      title: Text(
+        'En Yakın Klinicler',
+        style: Theme.of(context).textTheme.titleLarge?.copyWith(
+          color: Colors.black,
+          fontWeight: FontWeight.w600,
+        ),
+      ),
       centerTitle: true,
     );
   }
