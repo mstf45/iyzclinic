@@ -4,26 +4,48 @@ import 'package:fluttertoast/fluttertoast.dart';
 
 abstract class BasicUsageManagerInterface {
   void showToastMsg();
-  void pageNavigateProperty();
+  void pushPageNavigateProperty();
+  void pushAndRemoveUntilNavigate();
 }
 
 final class BasicUsageManager implements BasicUsageManagerInterface {
-  BasicUsageManager({required BuildContext context}) : _context = context;
+  BasicUsageManager({required BuildContext context, this.targetPage})
+    : _context = context;
 
   final BuildContext _context;
+  late Widget? targetPage;
+  BasicUsageManager setTargetPage(Widget page) {
+    targetPage = page;
+    return this;
+  }
 
   @override
-  void pageNavigateProperty() {
-    // TODO: implement pageNavigateProperty
+  void pushPageNavigateProperty() {
+    if (targetPage == null) {
+      Fluttertoast.showToast(msg: 'Hedef sayfa tanımlı değil!');
+      return;
+    }
     Navigator.push(
       _context,
-      CupertinoPageRoute(builder: (context) => Scaffold()),
+      CupertinoPageRoute(builder: (context) => targetPage!),
+    );
+  }
+
+  @override
+  void pushAndRemoveUntilNavigate() {
+    if (targetPage == null) {
+      Fluttertoast.showToast(msg: 'Hedef sayfa tanımlı değil!');
+      return;
+    }
+    Navigator.pushAndRemoveUntil(
+      _context,
+      CupertinoPageRoute(builder: (context) => targetPage!),
+      (route) => false,
     );
   }
 
   @override
   void showToastMsg() {
-    // TODO: implement showToastMsg
     Fluttertoast.showToast(msg: 'Test Ediyorum');
   }
 }

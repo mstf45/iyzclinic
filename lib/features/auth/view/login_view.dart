@@ -1,10 +1,18 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:iyzclinic/core/utils/components/custom_elevated_button.dart';
 import 'package:iyzclinic/core/utils/components/custom_text_from_field.dart';
+import 'package:iyzclinic/core/utils/constants/app_strings.dart';
+import 'package:iyzclinic/core/utils/constants/custom_sized_box.dart';
 import 'package:iyzclinic/core/utils/constants/home_style.dart';
+import 'package:iyzclinic/features/auth/view/register_view.dart';
 import 'package:iyzclinic/features/auth/widgets/manager/basic_usage_manager.dart';
+import 'package:iyzclinic/features/home/view/home_view.dart';
+import 'package:iyzclinic/features/home/widgets/home_widgets.dart';
 
+import '../../../core/utils/constants/custom_decoration_box.dart';
 import '../../../core/utils/validators/validate_class.dart';
+import '../mixin/login_mixin.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({super.key});
@@ -13,25 +21,66 @@ class LoginView extends StatefulWidget {
   State<LoginView> createState() => _LoginViewState();
 }
 
-class _LoginViewState extends State<LoginView> {
-  final GlobalKey<FormState> _globalKey = GlobalKey<FormState>();
+class _LoginViewState extends State<LoginView> with LoginMixin {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(backgroundColor: context.homeStyle.appbarColor),
-      body: Form(
-        key: _globalKey,
-        child: Column(
-          children: [
-            CustomTextFromField(
-              autovalidateMode: AutovalidateMode.onUserInteraction,
-              validator: (v) => ValidateClass().validateEmail(v),
+    final screenWidth = MediaQuery.sizeOf(context).width;
+    final screenHeight = MediaQuery.sizeOf(context).height;
+    return Material(
+      child: SafeArea(
+        child: Form(
+          key: globalKey,
+          child: Padding(
+            padding: LoginStyle.appbarPadding,
+            child: Column(
+              spacing: 10,
+              children: [
+                CustomSizedBoxHeight.small(),
+                CustomTextFromField(
+                  controller: emailController,
+                  label: AppStrings.loginEmailLabel,
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  validator: (v) => ValidateClass().validateEmail(v),
+                ),
+                CustomTextFromField(
+                  controller: passwordController,
+                  label: AppStrings.loginPasswordLabel,
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  validator: (v) => ValidateClass().validatePassword(v),
+                ),
+                Spacer(),
+                CustomElevatedButton(
+                  onPressed: () {
+                    if (globalKey.currentState!.validate()) {
+                      context.basicNavigate
+                          .setTargetPage(HomeWidgets())
+                          .pushAndRemoveUntilNavigate();
+                    }
+                  },
+                  text: AppStrings.loginButton,
+                ),
+                RichText(
+                  text: TextSpan(
+                    text: AppStrings.haveAccount,
+                    style: TextStyle(color: Colors.black),
+                    children: [
+                      TextSpan(
+                        text: AppStrings.registerButton,
+                        style: TextStyle(color: Colors.blue),
+                        recognizer: TapGestureRecognizer()
+                          ..onTap = () {
+                            context.basicNavigate
+                                .setTargetPage(const RegisterView())
+                                .pushPageNavigateProperty();
+                          },
+                      ),
+                    ],
+                  ),
+                ),
+                CustomSizedBoxHeight.small(),
+              ],
             ),
-            CustomElevatedButton(
-              onPressed: () => context.basicNavigate.pageNavigateProperty(),
-              text: 'Tıkla',
-            ),
-          ],
+          ),
         ),
       ),
     );
