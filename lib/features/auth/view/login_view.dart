@@ -43,12 +43,14 @@ class _LoginViewState extends State<LoginView> with LoginMixin {
                   label: AppStrings.loginEmailLabel,
                   autovalidateMode: AutovalidateMode.onUserInteraction,
                   validator: (v) => ValidateClass().validateEmail(v),
+                  keyboardType:TextInputType.emailAddress ,
                 ),
                 CustomTextFromField(
                   controller: passwordController,
                   label: AppStrings.loginPasswordLabel,
                   autovalidateMode: AutovalidateMode.onUserInteraction,
                   validator: (v) => ValidateClass().validatePassword(v),
+                  keyboardType:TextInputType.text ,
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,

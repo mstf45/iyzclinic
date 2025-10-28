@@ -8,6 +8,8 @@ import 'package:iyzclinic/features/auth/view_model/auth_view_model.dart';
 import 'package:iyzclinic/features/home/view_model/home_view_model.dart';
 import 'package:provider/provider.dart';
 
+import 'features/map/view_model.dart';
+
 void main() {
   runApp(
     DevicePreview(
@@ -16,6 +18,7 @@ void main() {
         providers: [
           ChangeNotifierProvider(create: (context) => HomeViewModel()),
           ChangeNotifierProvider(create: (context) => AuthViewModel()),
+          ChangeNotifierProvider(create: (context) => LocationProvider()),
         ],
         child: MyApp(),
       ),
