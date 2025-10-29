@@ -5,12 +5,19 @@ import 'package:iyzclinic/core/utils/constants/app_strings.dart';
 import 'package:iyzclinic/features/auth/view/login_view.dart';
 import 'package:iyzclinic/features/auth/view/register_view.dart';
 import 'package:iyzclinic/features/auth/view_model/auth_view_model.dart';
+import 'package:iyzclinic/features/home/view/patient_home_view.dart';
 import 'package:iyzclinic/features/home/view_model/home_view_model.dart';
+import 'package:iyzclinic/features/home/widgets/home_widgets.dart';
+import 'package:iyzclinic/features/profile/view_model/profile_view_model.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'features/home/view/home_view.dart';
+import 'features/home/view_model/location_view_model.dart';
 
-import 'features/map/view_model.dart';
-
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  final prefs = await SharedPreferences.getInstance();
+  final isLoggedIn = prefs.getBool('isLoggedIn') ?? false;
   runApp(
     DevicePreview(
       enabled: !kReleaseMode,
@@ -18,16 +25,18 @@ void main() {
         providers: [
           ChangeNotifierProvider(create: (context) => HomeViewModel()),
           ChangeNotifierProvider(create: (context) => AuthViewModel()),
-          ChangeNotifierProvider(create: (context) => LocationProvider()),
+          ChangeNotifierProvider(create: (context) => LocationViewModel()),
+          ChangeNotifierProvider(create: (context) => ProfileViewModel()),
         ],
-        child: MyApp(),
+        child: MyApp(isLoggedIn: isLoggedIn),
       ),
     ),
   );
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  final bool isLoggedIn;
+  const MyApp({super.key, this.isLoggedIn = false});
 
   @override
   Widget build(BuildContext context) {
@@ -39,8 +48,13 @@ class MyApp extends StatelessWidget {
       title: AppStrings.appName,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        useMaterial3: true,
       ),
-      home: LoginView(),
+      home: isLoggedIn ? const PatientHomeView() : const LoginView(),
     );
   }
 }
+
+// PatientHomeView
+
+// HomeWidgets

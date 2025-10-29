@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:iyzclinic/core/utils/components/custom_elevated_button.dart';
-import 'package:iyzclinic/core/utils/components/custom_text_from_field.dart';
+import 'package:iyzclinic/core/utils/components/button/custom_elevated_button.dart';
+import 'package:iyzclinic/core/utils/components/testfield/custom_text_from_field.dart';
 import 'package:iyzclinic/core/utils/constants/app_strings.dart';
 import 'package:iyzclinic/core/utils/constants/custom_sized_box.dart';
 import 'package:iyzclinic/core/utils/constants/home_style.dart';
 import 'package:iyzclinic/core/utils/validators/validate_class.dart';
 import 'package:iyzclinic/features/auth/widgets/manager/basic_usage_manager.dart';
 import 'package:kartal/kartal.dart';
+
+import '../../../core/utils/components/material/custom_material.dart';
 
 class ForgetPasswordView extends StatefulWidget {
   const ForgetPasswordView({super.key});
@@ -20,7 +22,7 @@ class _ForgetPasswordViewState extends State<ForgetPasswordView> {
   final TextEditingController emailController = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    return Material(
+    return CustomMaterial(
       child: SafeArea(
         child: Form(
           key: globalKey,

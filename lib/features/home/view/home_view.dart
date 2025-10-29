@@ -1,13 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
+import 'package:iyzclinic/core/utils/components/material/custom_material.dart';
 import 'package:iyzclinic/core/utils/constants/custom_decoration_box.dart';
 import 'package:iyzclinic/core/utils/constants/custom_sized_box.dart';
 import 'package:provider/provider.dart';
-import '../../map/view_model.dart';
 import '../model/home_model.dart';
 import 'package:http/http.dart' as http;
 import 'package:latlong2/latlong.dart';
+
+import '../view_model/location_view_model.dart';
 
 class HomeView extends StatelessWidget {
   final HomeModel? homeModel;
@@ -115,7 +117,7 @@ class LocationPickerScreen extends StatefulWidget {
   const LocationPickerScreen({super.key});
 
   @override
-  _LocationPickerScreenState createState() => _LocationPickerScreenState();
+  State<LocationPickerScreen> createState() => _LocationPickerScreenState();
 }
 
 class _LocationPickerScreenState extends State<LocationPickerScreen> {
@@ -127,17 +129,17 @@ class _LocationPickerScreenState extends State<LocationPickerScreen> {
     super.initState();
     // Kullanıcı açtığında konum alınsın
     Future.delayed(Duration.zero, () {
-      Provider.of<LocationProvider>(
+      Provider.of<LocationViewModel>(
         context,
         listen: false,
       ).requestUserLocation().then((_) {
         // Eğer konum alındıysa haritayı o konuma taşınır.
-        final markerPos = Provider.of<LocationProvider>(
+        final markerPos = Provider.of<LocationViewModel>(
           context,
           listen: false,
         ).markerPosition;
         if (markerPos != null) {
-          Provider.of<LocationProvider>(
+          Provider.of<LocationViewModel>(
             context,
             listen: false,
           ).mapController.move(markerPos, 5.0);
@@ -148,12 +150,12 @@ class _LocationPickerScreenState extends State<LocationPickerScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var locationProvider = Provider.of<LocationProvider>(context);
+    var locationProvider = Provider.of<LocationViewModel>(context);
     var urlTemplate =
         'https://maps.geoapify.com/v1/tile/carto/{z}/{x}/{y}.png?apiKey=${locationProvider.apiKey}';
-    return Material(
+    return CustomMaterial(
       child: SafeArea(
-        child: Consumer<LocationProvider>(
+        child: Consumer<LocationViewModel>(
           builder: (context, locationProvider, child) {
             return Column(
               children: [

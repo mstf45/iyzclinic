@@ -3,7 +3,7 @@ import 'package:iyzclinic/core/utils/constants/custom_bottom_appbar.dart';
 import 'package:iyzclinic/features/home/model/home_model.dart';
 import 'package:iyzclinic/features/home/view/drawer_view.dart';
 import 'package:iyzclinic/features/home/view/home_view.dart';
-import '../../../core/utils/components/custom_appbar.dart';
+import '../../../core/utils/components/appbar/custom_appbar.dart';
 import '../mixin/home_mixin.dart';
 
 class HomeWidgets extends StatefulWidget {
@@ -17,9 +17,9 @@ class _HomeWidgetsState extends State<HomeWidgets> with HomeMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: CustomAppbar(),
       drawer: DrawerView(),
       backgroundColor: Colors.white,
-      appBar: CustomAppbar(),
       body: ListView(
         children: [for (int i = 0; i < 20; i++) HomeView(homeModel: homeModel)],
       ),

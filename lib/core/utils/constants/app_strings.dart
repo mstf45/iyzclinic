@@ -25,6 +25,14 @@ class AppStrings {
   static const registerDontHaveAccount = 'Zaten hesabın var mı?';
   static const registerButton = ' Kayıt Ol';
   static const loginRichSubText = ' Giriş Yap';
+  static const String specialtyRequired = "Uzmanlık alanı boş bırakılamaz.";
+  static const String shortSpecialty = "Uzmanlık alanı en az 3 karakter olmalıdır.";
+
+  static const String chronicDiseaseRequired = "Kronik hastalık bilgisi boş bırakılamaz.";
+  static const String shortChronicDisease = "Kronik hastalık adı en az 3 karakter olmalıdır.";
+
+  static const String allergyRequired = "Alerji bilgisi boş bırakılamaz.";
+  static const String shortAllergy = "Alerji adı en az 3 karakter olmalıdır.";
 
   /// [Auth Forget Password]
   static const forgetPasswordTitle = 'Şifremi Unuttum';

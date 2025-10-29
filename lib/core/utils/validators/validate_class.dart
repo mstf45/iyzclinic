@@ -27,4 +27,24 @@ import '../constants/app_strings.dart';
     if (digits.length > 10) return AppStrings.invalidPhoneNumber;
     return null;
   }
+  /// 🔹 Uzmanlık alanı validasyonu (doktor kayıtları için)
+  String? validateSpecialty(String? v) {
+    if (v == null || v.trim().isEmpty) return AppStrings.specialtyRequired;
+    if (v.trim().length < 3) return AppStrings.shortSpecialty;
+    return null;
+  }
+
+  /// 🔹 Kronik hastalık validasyonu (hasta kayıtları için)
+  String? validateChronicDisease(String? v) {
+    if (v == null || v.trim().isEmpty) return AppStrings.chronicDiseaseRequired;
+    if (v.trim().length < 3) return AppStrings.shortChronicDisease;
+    return null;
+  }
+
+  /// 🔹 Alerji bilgisi validasyonu (hasta kayıtları için)
+  String? validateAllergy(String? v) {
+    if (v == null || v.trim().isEmpty) return AppStrings.allergyRequired;
+    if (v.trim().length < 3) return AppStrings.shortAllergy;
+    return null;
+  }
 }

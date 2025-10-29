@@ -1,7 +1,9 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:iyzclinic/core/utils/components/custom_elevated_button.dart';
-import 'package:iyzclinic/core/utils/components/custom_text_from_field.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:iyzclinic/core/utils/components/button/custom_elevated_button.dart';
+import 'package:iyzclinic/core/utils/components/material/custom_material.dart';
+import 'package:iyzclinic/core/utils/components/testfield/custom_text_from_field.dart';
 import 'package:iyzclinic/core/utils/constants/app_strings.dart';
 import 'package:iyzclinic/core/utils/constants/custom_sized_box.dart';
 import 'package:iyzclinic/core/utils/constants/home_style.dart';
@@ -10,10 +12,11 @@ import 'package:iyzclinic/features/auth/view/register_view.dart';
 import 'package:iyzclinic/features/auth/widgets/manager/basic_usage_manager.dart';
 import 'package:iyzclinic/features/home/view/home_view.dart';
 import 'package:iyzclinic/features/home/widgets/home_widgets.dart';
-
+import 'package:provider/provider.dart';
 import '../../../core/utils/constants/custom_decoration_box.dart';
 import '../../../core/utils/validators/validate_class.dart';
 import '../mixin/login_mixin.dart';
+import '../view_model/auth_view_model.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({super.key});
@@ -27,8 +30,8 @@ class _LoginViewState extends State<LoginView> with LoginMixin {
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.sizeOf(context).width;
     final screenHeight = MediaQuery.sizeOf(context).height;
-    return Material(
-      color: Colors.white,
+    final vm = Provider.of<AuthViewModel>(context);
+    return CustomMaterial(
       child: SafeArea(
         child: Form(
           key: globalKey,
@@ -43,14 +46,14 @@ class _LoginViewState extends State<LoginView> with LoginMixin {
                   label: AppStrings.loginEmailLabel,
                   autovalidateMode: AutovalidateMode.onUserInteraction,
                   validator: (v) => ValidateClass().validateEmail(v),
-                  keyboardType:TextInputType.emailAddress ,
+                  keyboardType: TextInputType.emailAddress,
                 ),
                 CustomTextFromField(
                   controller: passwordController,
                   label: AppStrings.loginPasswordLabel,
                   autovalidateMode: AutovalidateMode.onUserInteraction,
                   validator: (v) => ValidateClass().validatePassword(v),
-                  keyboardType:TextInputType.text ,
+                  keyboardType: TextInputType.text,
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
@@ -68,13 +71,33 @@ class _LoginViewState extends State<LoginView> with LoginMixin {
                     ),
                   ],
                 ),
+                /*   SwitchListTile(
+                  title: const Text("Doktor olarak giriş yap"),
+                  value: vm.isDoctor,
+                  onChanged: vm.toggleRole,
+                ),*/
                 Spacer(),
                 CustomElevatedButton(
-                  onPressed: () {
+                  onPressed: () async {
                     if (globalKey.currentState!.validate()) {
-                      context.basicNavigate
-                          .setTargetPage(HomeWidgets())
-                          .pushAndRemoveUntilNavigate();
+                      final success = await vm.login(
+                        email: emailController.text,
+                        password: passwordController.text,
+                      );
+                      if (success && context.mounted) {
+                        context.basicNavigate
+                            .setTargetPage(HomeWidgets())
+                            .pushAndRemoveUntilNavigate();
+                        Fluttertoast.showToast(
+                          msg: 'Giriş Başarılı',
+                          backgroundColor: Colors.green,
+                        );
+                      } else {
+                        Fluttertoast.showToast(
+                          msg: 'Giriş başarısız!',
+                          backgroundColor: Colors.red,
+                        );
+                      }
                     }
                   },
                   text: AppStrings.loginButton,

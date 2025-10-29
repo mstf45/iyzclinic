@@ -5,7 +5,7 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
 
-class LocationProvider extends ChangeNotifier {
+class LocationViewModel extends ChangeNotifier {
   List<LatLng> carPositions = [
     LatLng(39.922, 32.854),
     LatLng(39.925, 32.850),
