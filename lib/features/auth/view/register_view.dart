@@ -2,10 +2,13 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:iyzclinic/core/utils/components/material/custom_material.dart';
+import 'package:iyzclinic/features/auth/view/login_view.dart';
+import 'package:iyzclinic/features/home/view/patient_home_view.dart';
 import 'package:provider/provider.dart';
 import '../../../core/utils/components/button/custom_elevated_button.dart';
 import '../../../core/utils/components/testfield/custom_text_from_field.dart';
 import '../../../core/utils/constants/app_strings.dart';
+import '../../../core/utils/constants/bottom_dialog_boz.dart';
 import '../../../core/utils/constants/custom_sized_box.dart';
 import '../../../core/utils/constants/home_style.dart';
 import '../../../core/utils/validators/validate_class.dart';
@@ -116,8 +119,12 @@ class _RegisterViewState extends State<RegisterView> with RegisterMixin {
                       }
 
                       if (context.mounted) {
-                    Fluttertoast.showToast(msg: 'Kayıt başarılı! Giriş yapabilirsiniz.');
-                        context.basicNavigate.pushPageNavigateProperty();
+                        BottomDialogBox().successToastDialog(
+                          msg: 'Kayıt başarılı! Giriş yapabilirsiniz.',
+                        );
+                        context.basicNavigate
+                            .setTargetPage(LoginView())
+                            .pushPageNavigateProperty();
                         //    Navigator.pop(context);
                       }
                     }

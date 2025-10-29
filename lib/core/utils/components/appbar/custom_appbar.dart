@@ -18,7 +18,7 @@ final class CustomAppbar extends StatelessWidget
       backgroundColor: Colors.white,
       elevation: 0,
       title: Text(
-        'En Yakın Klinicler',
+        'Hasta Sayfası bu',
         style: Theme.of(context).textTheme.titleLarge?.copyWith(
           color: Colors.black,
           fontWeight: FontWeight.w600,
@@ -26,6 +26,17 @@ final class CustomAppbar extends StatelessWidget
       ),
       centerTitle: true,
       actions: [
+        IconButton(
+          onPressed: () {
+            vm.logout();
+            Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(builder: (context) => LoginView()),
+                  (route) => false,
+            );
+          },
+          icon: Icon(Icons.exit_to_app),
+        ),
         IconButton(
           onPressed: () {
             Navigator.push(

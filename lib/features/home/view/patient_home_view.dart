@@ -1,15 +1,46 @@
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:iyzclinic/core/utils/components/testfield/custom_text_from_field.dart';
 import 'package:iyzclinic/core/utils/constants/custom_sized_box.dart';
 import '../../../core/utils/components/material/custom_material.dart';
+import '../../auth/view/login_view.dart';
 import '../../auth/view_model/auth_view_model.dart';
 import '../../profile/view/profile_view.dart';
 import 'package:provider/provider.dart';
 
-class PatientHomeView extends StatelessWidget {
+class PatientHomeView extends StatefulWidget {
   const PatientHomeView({super.key});
 
+  @override
+  State<PatientHomeView> createState() => _PatientHomeViewState();
+}
+
+class _PatientHomeViewState extends State<PatientHomeView> {
+  List<Map<String, dynamic>> doctors = [];
+
+  @override
+  void initState() {
+    super.initState();
+    fetchDoctors();
+  }
+
+  Future<void> fetchDoctors() async {
+    final res = await http.get(Uri.parse("https://randomuser.me/api/?results=10&gender=male"));
+    if (res.statusCode == 200) {
+      final data = jsonDecode(res.body);
+      final List results = data["results"];
+      setState(() {
+        doctors = results.map((e) {
+          return {
+            "name": "Dr. ${e["name"]["first"]} ${e["name"]["last"]}",
+            "image": e["picture"]["medium"],
+          };
+        }).toList();
+      });
+    }
+  }
   @override
   Widget build(BuildContext context) {
     final vm = Provider.of<AuthViewModel>(context);
@@ -20,13 +51,16 @@ class PatientHomeView extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+
               // Hoş geldin kısmı
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Expanded(
                     child: Text(
-                      "👋 Hoş geldin, ${vm.loggedName}",
+                      vm.loggedName !=null
+                          ? "👋 Hoş geldin, ${vm.loggedName}"
+                          : '😥 Veri Yok',
                       style: Theme.of(context).textTheme.headlineSmall
                           ?.copyWith(fontWeight: FontWeight.bold),
                       overflow: TextOverflow.ellipsis,
@@ -90,7 +124,8 @@ class PatientHomeView extends StatelessWidget {
                 height: 100,
                 child: ListView(
                   scrollDirection: Axis.horizontal,
-                  children: List.generate(10, (index) {
+                  children: List.generate(doctors.length, (index) {
+                    final doc = doctors[index];
                     return Padding(
                       padding: const EdgeInsets.only(right: 12),
                       child: Column(
@@ -103,7 +138,7 @@ class PatientHomeView extends StatelessWidget {
                             ),
                           ),
                           Text(
-                            "Dr. Murat",
+                            doc["name"],
                             style: TextStyle(
                               fontSize: 13,
                               fontWeight: FontWeight.w500,
@@ -123,14 +158,20 @@ class PatientHomeView extends StatelessWidget {
                 style: Theme.of(context).textTheme.titleMedium,
               ),
               CustomSizedBoxHeight.medium(),
-              Flex(
-                direction: Axis.horizontal,
-                spacing: 5,
-                children: [
-                  _healthCard("❤️ Nabız", "78 bpm", Icons.favorite),
-                  _healthCard("💉 Tansiyon", "12.8", Icons.bloodtype),
-                  _healthCard("🍬 Kan Şekeri", "98 mg/dL", Icons.monitor_heart),
-                ],
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  spacing: 10,
+                  children: [
+                    _healthCard("❤️ Nabız", "78 bpm", Icons.favorite),
+                    _healthCard("💉 Tansiyon", "12.8", Icons.bloodtype),
+                    _healthCard(
+                      "🍬 Kan Şekeri",
+                      "98 mg/dL",
+                      Icons.monitor_heart,
+                    ),
+                  ],
+                ),
               ),
               CustomSizedBoxHeight.large(),
 

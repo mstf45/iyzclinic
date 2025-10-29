@@ -15,7 +15,13 @@ final class CustomDecorationBox extends BoxDecoration {
       );
   CustomDecorationBox.homeView()
     : super(
-        border: Border.all(width: 1,),
+        border: Border.all(width: 1),
         borderRadius: BorderRadius.all(Radius.circular(10)),
       );
+
+  CustomDecorationBox.profileView()
+      : super(
+    border: Border.all(color: Colors.black),
+    borderRadius: BorderRadius.all(Radius.circular(10)),
+  );
 }

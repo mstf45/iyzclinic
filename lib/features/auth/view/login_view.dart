@@ -15,6 +15,7 @@ import 'package:iyzclinic/features/home/widgets/home_widgets.dart';
 import 'package:provider/provider.dart';
 import '../../../core/utils/constants/custom_decoration_box.dart';
 import '../../../core/utils/validators/validate_class.dart';
+import '../../home/view/patient_home_view.dart';
 import '../mixin/login_mixin.dart';
 import '../view_model/auth_view_model.dart';
 
@@ -85,8 +86,13 @@ class _LoginViewState extends State<LoginView> with LoginMixin {
                         password: passwordController.text,
                       );
                       if (success && context.mounted) {
+
                         context.basicNavigate
-                            .setTargetPage(HomeWidgets())
+                            .setTargetPage(
+                          context.read<AuthViewModel>().isDoctor
+                              ? PatientHomeView()
+                              : HomeWidgets(),
+                        )
                             .pushAndRemoveUntilNavigate();
                         Fluttertoast.showToast(
                           msg: 'Giriş Başarılı',

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:iyzclinic/core/utils/constants/bottom_dialog_boz.dart';
 import '../../../core/utils/shared_prefs_helper.dart';
 import '../model/patient_model.dart';
 import '../model/doctor_model.dart';
@@ -11,6 +12,7 @@ class AuthViewModel extends ChangeNotifier {
 
   void toggleRole(bool doctor) {
     isDoctor = doctor;
+    debugPrint('Durumunuz:${isDoctor}');
     notifyListeners();
   }
 
@@ -25,11 +27,11 @@ class AuthViewModel extends ChangeNotifier {
   }
 
   /// 🔹 Giriş işlemi
-  Future<bool> login({
-    required String email,
-    required String password,
-  }) async {
-    final data = await SharedPrefsHelper.getData(isDoctor ? 'doctor' : 'patient');
+  Future<bool> login({required String email, required String password}) async {
+
+    final data = await SharedPrefsHelper.getData(
+      isDoctor ? 'doctor' : 'patient',
+    );
     if (data == null) return false;
 
     if (data["email"] == email && data["password"] == password) {
@@ -38,22 +40,17 @@ class AuthViewModel extends ChangeNotifier {
 
       // 🔹 SharedPreferences'a oturum bilgisi kaydet
       await SharedPrefsHelper.setBool('isLoggedIn', true);
-      await SharedPrefsHelper.setString('userType', isDoctor ? 'doctor' : 'patient');
+      await SharedPrefsHelper.setString(
+        'userType',
+        isDoctor ? 'doctor' : 'patient',
+      );
 
       notifyListeners();
-
-      Fluttertoast.showToast(
-        msg: 'Hoş geldiniz $loggedName',
-        backgroundColor: Colors.green,
-      );
+      BottomDialogBox().successToastDialog(msg: 'Hoş geldiniz $loggedName');
 
       return true;
     }
-
-    Fluttertoast.showToast(
-      msg: 'E-posta veya şifre hatalı',
-      backgroundColor: Colors.red,
-    );
+    BottomDialogBox().errorToastDialog(msg: 'E-posta veya şifre hatalı');
 
     return false;
   }
@@ -63,15 +60,12 @@ class AuthViewModel extends ChangeNotifier {
     isLoggedIn = false;
     loggedName = null;
 
-    // 🔹 SharedPreferences’tan oturum bilgilerini kaldır
-    await SharedPrefsHelper.remove('isLoggedIn');
-    await SharedPrefsHelper.remove('userType');
+    // kullanıcıya özel verileri temizle
+    await SharedPrefsHelper.clearUserData();
 
     notifyListeners();
-
-    Fluttertoast.showToast(
-      msg: 'Çıkış yapıldı',
-      backgroundColor: Colors.amber,
-    );
+    BottomDialogBox().infoToastDialog(msg: 'Çıkış yapıldı');
   }
+
+
 }
